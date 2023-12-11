@@ -1,20 +1,39 @@
-export default function Spinner() {
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import { cva } from "class-variance-authority";
+import { CgSpinner } from "react-icons/cg";
+
+import { cn } from "../../lib/utils";
+
+const spinnerVariants = cva(`animate-spin`, {
+    variants: {
+        variant: {
+            primary: "text-emerald-400",
+            danger: "text-red-500",
+        },
+        size: {
+            small: "w-5 h-5",
+            large: "w-10 h-10",
+        },
+    },
+    defaultVariants: {
+        size: "small",
+        variant: "primary",
+    },
+});
+
+export const Spinner = ({ size, variant, className }) => {
     return (
-        <div aria-label="Loading..." role="status">
-            <svg
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                xmlns="http://www.w3.org/2000/svg"
-                className="animate-spin w-5 h-5 stroke-slate-500"
-            >
-                <path d="M12 3v3m6.366-.366-2.12 2.12M21 12h-3m.366 6.366-2.12-2.12M12 21v-3m-6.366.366 2.12-2.12M3 12h3m-.366-6.366 2.12 2.12"></path>
-            </svg>
+        <CgSpinner
+            className={cn(spinnerVariants({ className, variant, size }))}
+        />
+    );
+};
+
+export const SpinnerFull = () => {
+    return (
+        <div className="w-full h-[50vh] flex justify-center items-center">
+            <Spinner size="large" />
         </div>
     );
-}
+};

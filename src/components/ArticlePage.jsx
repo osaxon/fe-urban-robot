@@ -1,9 +1,9 @@
-import { getArticlePageData } from "../utils/api";
+import { getArticlePageData } from "../lib/api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import Spinner from "./ui/Spinner";
+import { Spinner } from "./ui/Spinner";
 
 dayjs.extend(relativeTime);
 
