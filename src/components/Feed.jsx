@@ -1,27 +1,31 @@
-import { getArticles } from "../utils/api";
+/* eslint-disable no-unused-vars */
+import { getArticles } from "../lib/api";
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
-import { Link, useParams } from "react-router-dom";
-import Spinner from "./ui/Spinner";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Spinner, SpinnerFull } from "./ui/Spinner";
 
 export default function Feed() {
     const [articles, setArticles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [totalArticles, setTotalArticles] = useState(0);
-    const { p } = useParams();
+    const [search, setSearch] = useSearchParams();
+
+    const page = search.get("p");
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const { articles, total_count } = await getArticles(p);
+            const { articles, total_count } = await getArticles(page ?? 1);
             setArticles(articles);
             setTotalArticles(total_count);
             setIsLoading(false);
         };
         fetchData().catch((error) => console.log(error));
-    }, [p]);
+    }, [page]);
 
     return isLoading ? (
-        <Spinner />
+        <SpinnerFull />
     ) : (
         <section>
             <ul className="space-y-4">
@@ -38,13 +42,13 @@ export default function Feed() {
             <ul className="p-2 flex gap-2 items-center justify-end">
                 {Array.from({ length: Math.ceil(totalArticles / 10) }).map(
                     (val, i) => (
-                        <Link
+                        <button
                             className="border p-2 rounded"
                             key={i}
-                            to={`/${i + 1}`}
+                            onClick={() => setSearch({ p: i + 1 })}
                         >
                             {i + 1}
-                        </Link>
+                        </button>
                     )
                 )}
             </ul>

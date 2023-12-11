@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import { BiUpvote } from "react-icons/bi";
+import { FaRegCommentDots } from "react-icons/fa";
+
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -8,7 +11,7 @@ dayjs.extend(relativeTime);
 export default function ArticleCard(props) {
     const { article } = props;
     return (
-        <li className="border p-4 list-none rounded shadow-lg">
+        <li className="border p-4 list-none rounded shadow-lg space-y-2">
             <div className="flex items-center justify-between">
                 <p className="text-slate-600">
                     Posted by{" "}
@@ -31,7 +34,16 @@ export default function ArticleCard(props) {
                 {article.title}
             </Link>
 
-            <p className="text-slate-600">{article.comment_count} comments</p>
+            <div className="flex gap-4">
+                <button className="text-slate-600 flex items-center gap-1">
+                    <BiUpvote />
+                    {article.votes}
+                </button>
+                <p className="text-slate-600 flex items-center gap-1">
+                    <FaRegCommentDots />
+                    {article.comment_count}
+                </p>
+            </div>
         </li>
     );
 }
