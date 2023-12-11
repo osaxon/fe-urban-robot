@@ -1,4 +1,5 @@
 import Header from "./components/header";
+import { Routes, Route } from "react-router-dom";
 import Feed from "./components/Feed";
 
 function App() {
@@ -6,7 +7,10 @@ function App() {
         <>
             <Header />
             <main className="max-w-3xl mx-auto w-full">
-                <Feed />
+                <Routes>
+                    <Route path="/" element={<Feed />} />
+                    <Route path="/:p" element={<Feed />} />
+                </Routes>
             </main>
         </>
     );

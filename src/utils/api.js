@@ -5,7 +5,7 @@ const api = axios.create({
     timeout: 1000,
 });
 
-export const getArticles = async () => {
-    const { data } = await api.get("/articles");
+export const getArticles = async (p = 1) => {
+    const { data } = await api.get(`/articles?p=${p}`);
     return data;
 };
