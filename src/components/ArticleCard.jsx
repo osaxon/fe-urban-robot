@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { BiUpvote } from "react-icons/bi";
 import { FaRegCommentDots } from "react-icons/fa";
+import { vote } from "../lib/api";
+import { useState } from "react";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -10,6 +12,13 @@ dayjs.extend(relativeTime);
 /* eslint-disable react/prop-types */
 export default function ArticleCard(props) {
     const { article } = props;
+    const [votes, setVotes] = useState(article.votes);
+
+    const handleVote = async () => {
+        setVotes((curr) => curr + 1);
+        await vote(article.article_id);
+    };
+
     return (
         <li className="border p-4 list-none rounded shadow-lg space-y-2">
             <div className="flex items-center justify-between">
@@ -35,9 +44,12 @@ export default function ArticleCard(props) {
             </Link>
 
             <div className="flex gap-4">
-                <button className="text-slate-600 flex items-center gap-1">
+                <button
+                    onClick={handleVote}
+                    className="text-slate-600 flex items-center gap-1"
+                >
                     <BiUpvote />
-                    {article.votes}
+                    {votes}
                 </button>
                 <p className="text-slate-600 flex items-center gap-1">
                     <FaRegCommentDots />
