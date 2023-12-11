@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -12,7 +13,9 @@ export default function ArticleCard(props) {
                 <p className="text-slate-600">
                     Posted by{" "}
                     <span className="text-emerald-600 hover:underline">
-                        <a href="/">{article.author}</a>
+                        <Link to={`/articles/${article.article_id}`}>
+                            {article.author}
+                        </Link>
                     </span>{" "}
                     {dayjs(article.created_at).fromNow()}
                 </p>
@@ -21,9 +24,12 @@ export default function ArticleCard(props) {
                 </button>
             </div>
 
-            <a href="/">
-                <h2 className="font-bold my-2 text-xl">{article.title}</h2>
-            </a>
+            <Link
+                className="font-bold text-xl hover:underline"
+                to={`/articles/${article.article_id}`}
+            >
+                {article.title}
+            </Link>
 
             <p className="text-slate-600">{article.comment_count} comments</p>
         </li>
