@@ -19,15 +19,17 @@ export default function Feed() {
         "loading..."
     ) : (
         <section>
-            {articles &&
-                articles.map((article) => {
-                    return (
-                        <ArticleCard
-                            key={article.article_id}
-                            article={article}
-                        />
-                    );
-                })}
+            <ul className="space-y-4">
+                {articles &&
+                    articles.map((article) => {
+                        return (
+                            <ArticleCard
+                                key={article.article_id}
+                                article={article}
+                            />
+                        );
+                    })}
+            </ul>
         </section>
     );
 }
