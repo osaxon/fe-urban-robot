@@ -2,6 +2,7 @@ import { getArticles } from "../utils/api";
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 import { Link, useParams } from "react-router-dom";
+import Spinner from "./ui/Spinner";
 
 export default function Feed() {
     const [articles, setArticles] = useState([]);
@@ -20,7 +21,7 @@ export default function Feed() {
     }, [p]);
 
     return isLoading ? (
-        "loading..."
+        <Spinner />
     ) : (
         <section>
             <ul className="space-y-4">
