@@ -25,7 +25,6 @@ export const getArticlePageData = async (id) => {
 };
 
 export const vote = async (id) => {
-    console.log(id);
     try {
         const { data } = await api.patch(`/articles/${id}`, { inc_votes: 1 });
         return data;
