@@ -32,3 +32,12 @@ export const vote = async (id) => {
         throw new Error("error updating votes");
     }
 };
+
+export const postComment = async (id, newComment) => {
+    
+    try {
+        return await api.post(`/articles/${id}/comments`, newComment);
+    } catch (error) {
+        throw new Error("error inserting comment");
+    }
+};
