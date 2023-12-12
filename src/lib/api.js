@@ -26,7 +26,7 @@ export const getArticlePageData = async (id) => {
 
 export const vote = async (id) => {
     try {
-        const { data } = await api.patch(`/articles/${id}`, { in_votes: 1 });
+        const { data } = await api.patch(`/articles/${id}`, { inc_votes: 1 });
         return data;
     } catch (error) {
         throw new Error("error updating votes");
