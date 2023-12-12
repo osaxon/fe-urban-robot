@@ -41,7 +41,7 @@ export default function ArticleComments({ articleId }) {
                 username: user.username,
                 body: newComment.body,
             });
-            console.log(savedComment);
+            // update UI state with the saved comment details
             setComments([savedComment, ...prevComments]);
         } catch (error) {
             console.error(error);
