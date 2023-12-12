@@ -24,6 +24,15 @@ export const getArticlePageData = async (id) => {
     return await Promise.all([getSingleArticle(id), getArticleComments(id)]);
 };
 
+export const vote = async (id) => {
+    try {
+        const { data } = await api.patch(`/articles/${id}`, { inc_votes: 1 });
+        return data;
+    } catch (error) {
+        throw new Error("error updating votes");
+    }
+};
+
 export const postComment = async (id, newComment) => {
     try {
         return await api.post(`/articles/${id}/comments`, newComment);
