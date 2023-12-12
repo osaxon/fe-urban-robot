@@ -23,3 +23,11 @@ export const getArticleComments = async (id) => {
 export const getArticlePageData = async (id) => {
     return await Promise.all([getSingleArticle(id), getArticleComments(id)]);
 };
+
+export const postComment = async (id, newComment) => {
+    try {
+        return await api.post(`/articles/${id}/comments`, newComment);
+    } catch (error) {
+        throw new Error("error inserting comment");
+    }
+};

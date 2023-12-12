@@ -1,25 +1,23 @@
-import { getArticlePageData } from "../lib/api";
+import { getSingleArticle } from "../lib/api";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Spinner } from "./ui/Spinner";
+import ArticleComments from "./ArticleComments";
 
 dayjs.extend(relativeTime);
 
 export default function ArticlePage() {
     const [article, setArticle] = useState();
-    const [comments, setComments] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const [article, commentData] = await getArticlePageData(id);
-            const { comments } = commentData;
+            const article = await getSingleArticle(id);
             setArticle(article);
-            setComments(comments);
             setIsLoading(false);
         };
         fetchData();
@@ -34,26 +32,13 @@ export default function ArticlePage() {
                 <img
                     src={article.article_img_url}
                     alt={`article cover image`}
+                    className="w-full"
                 />
                 <article className="text-lg leading-relaxed">
                     {article.body}
                 </article>
                 <div>{article.comment_count} comments</div>
-                <article>
-                    <ul className="space-y-4">
-                        {comments.map((comment) => (
-                            <li key={comment.comment_id}>
-                                <span className="text-slate-700">
-                                    {comment.author} -{" "}
-                                    {dayjs(comment.created_at).fromNow()}
-                                </span>
-                                <p className="leading-relaxed">
-                                    {comment.body}
-                                </p>
-                            </li>
-                        ))}
-                    </ul>
-                </article>
+                <ArticleComments articleId={id} />
             </section>
         )
     );
