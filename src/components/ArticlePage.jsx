@@ -37,7 +37,6 @@ export default function ArticlePage() {
                 <article className="text-lg leading-relaxed">
                     {article.body}
                 </article>
-                <div>{article.comment_count} comments</div>
                 <ArticleComments articleId={id} />
             </section>
         )
