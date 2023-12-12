@@ -34,6 +34,7 @@ export const vote = async (id) => {
 };
 
 export const postComment = async (id, newComment) => {
+    
     try {
         return await api.post(`/articles/${id}/comments`, newComment);
     } catch (error) {

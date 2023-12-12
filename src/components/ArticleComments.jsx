@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { Spinner, SpinnerFull } from "./ui/Spinner";
 import { UserContext } from "../context/userContext";
 import { postComment } from "../lib/api";
+import { toast } from "react-hot-toast";
 
 export default function ArticleComments({ articleId }) {
     const { user } = useContext(UserContext);
@@ -26,19 +27,32 @@ export default function ArticleComments({ articleId }) {
 
     const submitComment = async (e) => {
         e.preventDefault();
+        // snapshot current comment state
+        const prevComments = comments;
+
         try {
             setIsPosting(true);
+            // optimistically update the UI
+            setComments((curr) => [newComment, ...curr]);
+            // add comment to DB
             await postComment(articleId, {
                 username: user,
-                body: newComment,
+                body: newComment.body,
             });
-            // refetch comments and update UI...
-            fetchData();
         } catch (error) {
             console.error(error);
+            // revert to snapshot in event of error when isnerting comments
+            setComments(prevComments);
+            toast.error("Oops! something went wrong.");
         } finally {
             setIsPosting(false);
-            setNewComment("");
+            setNewComment({
+                author: "",
+                body: "",
+                created_at: null,
+                comment_id: undefined,
+            });
+            toast.success("Thanks!");
         }
     };
 
@@ -49,10 +63,17 @@ export default function ArticleComments({ articleId }) {
             <form className="flex items-center gap-4" onSubmit={submitComment}>
                 <p>Logged in as: {user}</p>
                 <textarea
-                    onChange={(e) => setNewComment(e.target.value)}
+                    onChange={(e) =>
+                        setNewComment({
+                            author: user,
+                            body: e.target.value,
+                            comment_id: user,
+                            created_at: new Date(),
+                        })
+                    }
                     className="border rounded w-full"
                     type="text"
-                    value={newComment}
+                    value={newComment.body}
                 />
                 <button className="border p-2 rounded">
                     {isPosting ? <Spinner /> : "Comment"}
