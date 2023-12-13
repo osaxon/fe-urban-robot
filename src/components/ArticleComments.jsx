@@ -2,10 +2,12 @@
 import { getArticleComments } from "../lib/api";
 import { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
+import { MdDelete } from "react-icons/md";
 import { Spinner, SpinnerFull } from "./ui/Spinner";
 import { UserContext } from "../context/userContext";
-import { postComment } from "../lib/api";
+import { postComment, deleteComment } from "../lib/api";
 import { toast } from "react-hot-toast";
+import { cn } from "../lib/utils";
 
 export default function ArticleComments({ articleId }) {
     const { user } = useContext(UserContext);
@@ -35,10 +37,12 @@ export default function ArticleComments({ articleId }) {
             // optimistically update the UI
             setComments((curr) => [newComment, ...curr]);
             // add comment to DB
-            await postComment(articleId, {
-                username: user,
+            const { comment: savedComment } = await postComment(articleId, {
+                username: user.username,
                 body: newComment.body,
             });
+            // update UI state with the saved comment details
+            setComments([savedComment, ...prevComments]);
         } catch (error) {
             console.error(error);
             // revert to snapshot in event of error when isnerting comments
@@ -56,37 +60,86 @@ export default function ArticleComments({ articleId }) {
         }
     };
 
+    const removeComment = async (commentId) => {
+        const commentSnapshot = comments;
+        const updatedComments = comments.filter(
+            ({ comment_id }) => comment_id !== commentId
+        );
+        setComments(updatedComments);
+        try {
+            await deleteComment(commentId);
+            toast.success("Comment deleted");
+        } catch (error) {
+            toast.error("Oops! that didn't work");
+            setComments(commentSnapshot);
+        }
+    };
+
     return isLoading ? (
         <SpinnerFull />
     ) : (
-        <section className="space-y-6">
-            <form className="flex items-center gap-4" onSubmit={submitComment}>
-                <p>Logged in as: {user}</p>
+        <section className="space-y-6 py-4">
+            <form
+                className="flex flex-col border-b py-2 bg-slate-50 p-4 rounded"
+                onSubmit={submitComment}
+            >
+                <p className="text-sm">
+                    Comment as{" "}
+                    <a className="text-emerald-600 hover:underline" href="/">
+                        {user.username}
+                    </a>
+                </p>
                 <textarea
                     onChange={(e) =>
                         setNewComment({
-                            author: user,
+                            author: user.username,
                             body: e.target.value,
-                            comment_id: user,
+                            comment_id: user.username,
                             created_at: new Date(),
                         })
                     }
-                    className="border rounded w-full"
+                    placeholder="Tell us your thoughts"
+                    className="border rounded w-full p-2"
                     type="text"
                     value={newComment.body}
                 />
-                <button className="border p-2 rounded">
+                <button
+                    type="submit"
+                    className="border my-2 place-self-end py-1 px-2 rounded text-sm h-full bg-emerald-600 text-emerald-50"
+                >
                     {isPosting ? <Spinner /> : "Comment"}
                 </button>
             </form>
+
             <ul className="space-y-4">
                 {comments &&
                     comments.map((comment) => (
-                        <li key={comment.comment_id}>
-                            <span className="text-slate-700">
-                                {comment.author} -{" "}
-                                {dayjs(comment.created_at).fromNow()}
-                            </span>
+                        <li
+                            className={cn(
+                                "border p-2 rounded",
+                                comment.author === user.username &&
+                                    "border-2 border-emerald-300 bg-emerald-50"
+                            )}
+                            key={comment.comment_id}
+                        >
+                            <div className="text-slate-700 flex justify-between">
+                                <p>
+                                    {comment.author === user.username
+                                        ? "you"
+                                        : comment.author}{" "}
+                                    · {dayjs(comment.created_at).fromNow()}
+                                </p>
+                                {comment.author === user.username && (
+                                    <button
+                                        onClick={() =>
+                                            removeComment(comment.comment_id)
+                                        }
+                                        className="group"
+                                    >
+                                        <MdDelete className="w-5 h-5 text-red-500 group-hover:text-red-400 transition-colors" />
+                                    </button>
+                                )}
+                            </div>
                             <p className="leading-relaxed">{comment.body}</p>
                         </li>
                     ))}
