@@ -5,8 +5,12 @@ const api = axios.create({
     timeout: 1000,
 });
 
-export const getArticles = async (p = 1) => {
-    const { data } = await api.get(`/articles?p=${p}`);
+export const getArticles = async (p = 1, topicQuery) => {
+    let url = `/articles?p=${p}`;
+    if (topicQuery) {
+        url += `&topic=${topicQuery}`;
+    }
+    const { data } = await api.get(url);
     return data;
 };
 
@@ -47,5 +51,14 @@ export const deleteComment = async (id) => {
         await api.delete(`/comments/${id}`);
     } catch (error) {
         throw new Error("error deleting comment");
+    }
+};
+
+export const getTopics = async () => {
+    try {
+        const { data } = await api.get("/topics");
+        return data;
+    } catch (error) {
+        throw new Error("error fetching topics data");
     }
 };

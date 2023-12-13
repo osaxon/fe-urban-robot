@@ -2,8 +2,8 @@
 import { getArticles } from "../lib/api";
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
-import { Link, useParams, useSearchParams } from "react-router-dom";
-import { Spinner, SpinnerFull } from "./ui/Spinner";
+import { useSearchParams } from "react-router-dom";
+import { SpinnerFull } from "./ui/Spinner";
 
 export default function Feed() {
     const [articles, setArticles] = useState([]);
@@ -12,17 +12,29 @@ export default function Feed() {
     const [search, setSearch] = useSearchParams();
 
     const page = search.get("p");
+    const topic = search.get("topic");
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            const { articles, total_count } = await getArticles(page ?? 1);
+            const { articles, total_count } = await getArticles(
+                page ?? 1,
+                topic
+            );
             setArticles(articles);
             setTotalArticles(total_count);
             setIsLoading(false);
         };
         fetchData().catch((error) => console.log(error));
-    }, [page]);
+    }, [page, topic]);
+
+    const nextPage = (currentPage) => {
+        let searchParams = { p: currentPage + 1 };
+        if (topic) {
+            searchParams.topic = topic;
+        }
+        setSearch(searchParams);
+    };
 
     return isLoading ? (
         <SpinnerFull />
@@ -45,7 +57,7 @@ export default function Feed() {
                         <button
                             className="border p-2 rounded"
                             key={i}
-                            onClick={() => setSearch({ p: i + 1 })}
+                            onClick={() => nextPage(i)}
                         >
                             {i + 1}
                         </button>
