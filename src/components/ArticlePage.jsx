@@ -27,19 +27,27 @@ export default function ArticlePage() {
         <Spinner />
     ) : (
         article && (
-            <section className="space-y-4">
-                <h1 className="font-bold text-2xl">{article.title}</h1>
-                <img
-                    src={article.article_img_url}
-                    alt={`article cover image`}
-                    className="w-full"
-                />
-                <article className="text-lg leading-relaxed">
-                    {article.body}
-                </article>
-                <div>{article.comment_count} comments</div>
+            <>
+                <section className="space-y-4">
+                    <header>
+                        <h1 className="font-bold text-2xl">{article.title}</h1>
+                        <p className="text-sm text-slate-800">
+                            By {article.author} ·{" "}
+                            {dayjs(article.created_at).fromNow()}
+                        </p>
+                    </header>
+
+                    <img
+                        src={article.article_img_url}
+                        alt={`article cover image`}
+                        className="w-full"
+                    />
+                    <article className="text-lg leading-relaxed py-6">
+                        {article.body}
+                    </article>
+                </section>
                 <ArticleComments articleId={id} />
-            </section>
+            </>
         )
     );
 }

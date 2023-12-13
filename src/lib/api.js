@@ -39,9 +39,18 @@ export const vote = async (id) => {
 
 export const postComment = async (id, newComment) => {
     try {
-        return await api.post(`/articles/${id}/comments`, newComment);
+        const { data } = await api.post(`/articles/${id}/comments`, newComment);
+        return data;
     } catch (error) {
         throw new Error("error inserting comment");
+    }
+};
+
+export const deleteComment = async (id) => {
+    try {
+        await api.delete(`/comments/${id}`);
+    } catch (error) {
+        throw new Error("error deleting comment");
     }
 };
 
