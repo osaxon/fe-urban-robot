@@ -28,6 +28,14 @@ export default function Feed() {
         fetchData().catch((error) => console.log(error));
     }, [page, topic]);
 
+    const nextPage = (currentPage) => {
+        let searchParams = { p: currentPage + 1 };
+        if (topic) {
+            searchParams.topic = topic;
+        }
+        setSearch(searchParams);
+    };
+
     return isLoading ? (
         <SpinnerFull />
     ) : (
@@ -49,7 +57,7 @@ export default function Feed() {
                         <button
                             className="border p-2 rounded"
                             key={i}
-                            onClick={() => setSearch({ p: i + 1 })}
+                            onClick={() => nextPage(i)}
                         >
                             {i + 1}
                         </button>
