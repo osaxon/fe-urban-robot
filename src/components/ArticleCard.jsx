@@ -47,9 +47,12 @@ export default function ArticleCard(props) {
                     </span>{" "}
                     {dayjs(article.created_at).fromNow()}
                 </p>
-                <button className="border-emerald-400 border rounded-lg p-1 bg-emerald-300 text-xs font-bold text-emerald-800">
+                <Link
+                    to={`/articles?topic=${article.topic}`}
+                    className="border-emerald-400 border rounded-lg p-1 bg-emerald-300 text-xs font-bold text-emerald-800"
+                >
                     {article.topic}
-                </button>
+                </Link>
             </div>
 
             <Link
