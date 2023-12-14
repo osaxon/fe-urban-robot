@@ -9,8 +9,10 @@ export default function ErrorPage() {
     return (
         <div className="h-[60dvh] flex flex-col items-center justify-center text-orange-600">
             <BiError className="w-20 h-20" />
-            <h1 className="font-bold text-3xl">Error: {params.code}</h1>
-            <h2 className="text-2xl">{msg}</h2>
+            <h1 className="font-bold text-3xl">
+                Error: {params.code ?? "404"}
+            </h1>
+            <h2 className="text-2xl">{msg ?? "Page not found"}</h2>
             <Link
                 className="text-lg text-emerald-600 font-bold hover:underline"
                 to={"/"}

@@ -18,6 +18,7 @@ function App() {
                     <Route path="/articles/:id" element={<ArticlePage />} />
                     <Route path="/articles" element={<AllArticlesPage />} />
                     <Route path="/error/:code" element={<ErrorPage />} />
+                    <Route path="/*" element={<ErrorPage />} />
                 </Routes>
             </main>
         </UserContextProvider>
