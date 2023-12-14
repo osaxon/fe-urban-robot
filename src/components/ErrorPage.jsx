@@ -7,7 +7,7 @@ export default function ErrorPage() {
     const msg = search.get("msg");
     console.log(params, msg);
     return (
-        <div className="h-[60dvh] flex flex-col items-center justify-center text-orange-600">
+        <div className="min-h-[60dvh] flex flex-col items-center justify-center text-orange-600">
             <BiError className="w-20 h-20" />
             <h1 className="font-bold text-3xl">
                 Error: {params.code ?? "404"}

@@ -7,6 +7,7 @@ export default function AllArticlesPage() {
     const [search] = useSearchParams();
 
     const topic = search.get("topic");
+    
     return (
         <>
             <section className="py-12">
