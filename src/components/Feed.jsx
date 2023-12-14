@@ -1,46 +1,35 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { getArticles } from "../lib/api";
-import { useEffect, useState } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useState } from "react";
 import ArticleCard from "./ArticleCard";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { SpinnerFull } from "./ui/Spinner";
+import { cn } from "../lib/utils";
 
 export default function Feed({ sort }) {
-    const nav = useNavigate();
-    const [articles, setArticles] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [error, setError] = useState(undefined);
-    const [totalArticles, setTotalArticles] = useState(0);
     const [search, setSearch] = useSearchParams();
 
     const page = search.get("p");
     const topic = search.get("topic");
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            const { articles, total_count } = await getArticles(
-                page ?? 1,
-                topic,
-                sort
-            );
-            setArticles(articles);
-            setTotalArticles(total_count);
-            setIsLoading(false);
-        };
-        fetchData()
-            .catch((err) => {
-                nav(
-                    `/error/${err.response.status}?msg=${err.response.data.msg}`
-                );
-            })
-            .finally(() => setIsLoading(false));
-    }, [page, topic]);
+    const { data, isLoading, isError, error, isFetching, isPlaceholderData } =
+        useQuery({
+            queryKey: ["articles", page, { topic, sort }],
+            queryFn: async () => {
+                try {
+                    const data = await getArticles(page || 1, { topic, sort });
+                    return data;
+                } catch (error) {
+                    throw new Error("error");
+                }
+            },
+            placeholderData: keepPreviousData,
+        });
 
-    const nextPage = (currentPage) => {
-        let searchParams = { p: currentPage + 1 };
+    const changePage = (selectedPage) => {
+        let searchParams = { p: selectedPage };
         if (topic) {
             searchParams.topic = topic;
         }
@@ -49,13 +38,11 @@ export default function Feed({ sort }) {
 
     return isLoading ? (
         <SpinnerFull />
-    ) : isError ? (
-        <div>{JSON.stringify(error, null, 2)}</div>
     ) : (
         <section>
             <ul className="space-y-4">
-                {articles &&
-                    articles.map((article) => {
+                {data &&
+                    data.articles.map((article) => {
                         return (
                             <ArticleCard
                                 key={article.article_id}
@@ -64,17 +51,28 @@ export default function Feed({ sort }) {
                         );
                     })}
             </ul>
-            <ul className="p-2 flex gap-2 items-center justify-end">
-                {Array.from({ length: Math.ceil(totalArticles / 10) }).map(
-                    (val, i) => (
-                        <button
-                            className="border p-2 rounded"
-                            key={i}
-                            onClick={() => nextPage(i)}
-                        >
-                            {i + 1}
-                        </button>
-                    )
+            <ul className="flex items-center gap-2 justify-end py-4">
+                {Array.from({ length: Math.ceil(data.total_count / 10) }).map(
+                    (el, i) => {
+                        return (
+                            <li
+                                className={cn(
+                                    "px-2 py-1 border rounded transition-colors shadow-md",
+                                    +page === i + 1 &&
+                                        "bg-emerald-400 ring-2 ring-emerald-200"
+                                )}
+                                key={i + 1}
+                            >
+                                <button
+                                    disabled={+page === i + 1}
+                                    className="disabled:text-emerald-900 transition-colors"
+                                    onClick={() => changePage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            </li>
+                        );
+                    }
                 )}
             </ul>
         </section>

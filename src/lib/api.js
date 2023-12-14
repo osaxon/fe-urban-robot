@@ -6,11 +6,12 @@ const api = axios.create({
 });
 
 // eslint-disable-next-line no-unused-vars
-export const getArticles = async (p = 1, topicQuery, sort) => {
-    let url = `/articles?p=${p}`;
+export const getArticles = async (page = 1, queries) => {
+    const { topic, sort } = queries;
+    let url = `/articles?p=${page}`;
 
-    if (topicQuery) {
-        url += `&topic=${topicQuery}`;
+    if (topic) {
+        url += `&topic=${topic}`;
     }
 
     if (sort && sort.order && sort.sortBy) {
@@ -18,7 +19,6 @@ export const getArticles = async (p = 1, topicQuery, sort) => {
     }
 
     const { data } = await api.get(url);
-    console.log(data);
     return data;
 };
 

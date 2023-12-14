@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getTopics } from "../lib/api";
 import Feed from "./Feed";
 import SortAndFilter from "./SortAndFilter";
 
 export default function HomePage() {
-    const [topics, setTopics] = useState([]);
     const [sortState, setSortState] = useState({
         sortBy: "Votes",
         order: "DESC",
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { topics } = await getTopics();
-            setTopics(topics);
-        };
-        fetchData();
-    }, []);
+    const { data } = useQuery({
+        queryKey: ["topics"],
+        queryFn: getTopics,
+    });
 
     return (
         <>
@@ -30,36 +28,28 @@ export default function HomePage() {
                 </h2>
             </section>
             <SortAndFilter sortState={sortState} setSortState={setSortState} />
-            <section className="bg-slate-50 shadow-lg p-4 my-4 rounded transition-all">
+            <section className="bg-slate-50 shadow-md p-4 my-4 rounded transition-all">
                 <h3 className="font-bold text-lg text-slate-900">Topics</h3>
                 <p className="text-slate-700">
                     Select a topic to view related articles
                 </p>
-                <ul className="flex items-center flex-wrap gap-2 py-4">
-                    {topics.map(({ slug }) => (
-                        <li
-                            className="list-none bg-emerald-300 border-emerald-500 text-emerald-900 font-semibold hover:bg-emerald-200 transition-colors border rounded"
-                            key={slug}
-                        >
-                            <Link
-                                className="text-xs p-1 inline-flex items-center"
-                                to={`/articles?topic=${slug}`}
+                <ul className="grid grid-cols-2 md:grid-cols-4 gap-2 py-4">
+                    {data &&
+                        data.topics &&
+                        data.topics.map(({ slug, description }) => (
+                            <li
+                                className="list-none p-2 bg-white border rounded"
+                                key={slug}
                             >
-                                {slug}
-                            </Link>
-                        </li>
-                    ))}
-                    <li
-                        className="list-none bg-orange-300 border-orange-500 text-orange-900 font-semibold hover:bg-orange-200 transition-colors border rounded"
-                        key="cheeses"
-                    >
-                        <Link
-                            className="text-xs p-1 inline-flex items-center"
-                            to={`/articles?topic=cheeses`}
-                        >
-                            Non-existent Topic
-                        </Link>
-                    </li>
+                                <Link
+                                    className="hover:underline"
+                                    to={`/articles?topic=${slug}`}
+                                >
+                                    {slug}
+                                </Link>
+                                <p className="text-sm">{description}</p>
+                            </li>
+                        ))}
                 </ul>
             </section>
 
