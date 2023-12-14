@@ -2,12 +2,15 @@
 import { getArticles } from "../lib/api";
 import { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { SpinnerFull } from "./ui/Spinner";
 
 export default function Feed() {
+    const nav = useNavigate();
     const [articles, setArticles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [error, setError] = useState(undefined);
     const [totalArticles, setTotalArticles] = useState(0);
     const [search, setSearch] = useSearchParams();
 
@@ -25,7 +28,16 @@ export default function Feed() {
             setTotalArticles(total_count);
             setIsLoading(false);
         };
-        fetchData().catch((error) => console.log(error));
+        fetchData()
+            .catch((error) => {
+                console.log(error.response);
+                setIsError(true);
+                setError(error.response);
+                nav(
+                    `/error/${error.response.status}?msg=${error.response.data.msg}`
+                );
+            })
+            .finally(() => setIsLoading(false));
     }, [page, topic]);
 
     const nextPage = (currentPage) => {
@@ -38,6 +50,8 @@ export default function Feed() {
 
     return isLoading ? (
         <SpinnerFull />
+    ) : isError ? (
+        <div>{JSON.stringify(error, null, 2)}</div>
     ) : (
         <section>
             <ul className="space-y-4">
