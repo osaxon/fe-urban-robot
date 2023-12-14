@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Spinner } from "./ui/Spinner";
+import { SpinnerFull } from "./ui/Spinner";
 import ArticleComments from "./ArticleComments";
 
 dayjs.extend(relativeTime);
@@ -27,7 +27,7 @@ export default function ArticlePage() {
     }, [id]);
 
     return isLoading ? (
-        <Spinner />
+        <SpinnerFull />
     ) : (
         article && (
             <>

@@ -43,7 +43,7 @@ export default function HomePage() {
                             >
                                 <Link
                                     className="hover:underline"
-                                    to={`/articles?topic=${slug}`}
+                                    to={`/?topic=${slug}`}
                                 >
                                     {slug}
                                 </Link>
