@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getTopics } from "../lib/api";
 import Feed from "./Feed";
+import SortAndFilter from "./SortAndFilter";
 
 export default function HomePage() {
     const [topics, setTopics] = useState([]);
@@ -45,7 +46,7 @@ export default function HomePage() {
                     ))}
                 </ul>
             </section>
-
+            <SortAndFilter />
             <Feed />
         </>
     );
