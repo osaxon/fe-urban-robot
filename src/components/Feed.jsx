@@ -4,11 +4,12 @@ import { getArticles } from "../lib/api";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
 import ArticleCard from "./ArticleCard";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { SpinnerFull } from "./ui/Spinner";
 import { cn } from "../lib/utils";
 
 export default function Feed({ sort }) {
+    const router = useNavigate();
     const [search, setSearch] = useSearchParams();
 
     const page = search.get("p");
@@ -22,7 +23,9 @@ export default function Feed({ sort }) {
                     const data = await getArticles(page || 1, { topic, sort });
                     return data;
                 } catch (error) {
-                    throw new Error("error");
+                    router(
+                        `/error/${error.response.status}?msg=${error.response.data.msg}`
+                    );
                 }
             },
             placeholderData: keepPreviousData,
