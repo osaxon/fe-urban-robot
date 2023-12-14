@@ -5,14 +5,25 @@ const api = axios.create({
     timeout: 1000,
 });
 
+// eslint-disable-next-line no-unused-vars
 export const getArticles = async (p = 1, topicQuery, sort) => {
-    let url = `/articles?p=${p}`;
-    if (topicQuery) {
-        url += `&topic=${topicQuery}`;
+    try {
+        let url = `/articles?p=${p}`;
+        if (topicQuery) {
+            console.log(topicQuery);
+            url += `&topic=${topicQuery}`;
+        }
+
+        if (sort && sort.order && sort.sortBy) {
+            url += `&sort_by=${sort.sortBy.toLowerCase()}&order=${sort.order.toLowerCase()}`;
+        }
+
+        const { data } = await api.get(url);
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw new Error("error fetching articles");
     }
-    url += `&sort_by=${sort.sortBy.toLowerCase()}&order=${sort.order.toLowerCase()}`;
-    const { data } = await api.get(url);
-    return data;
 };
 
 export const getSingleArticle = async (id) => {

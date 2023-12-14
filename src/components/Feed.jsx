@@ -28,7 +28,7 @@ export default function Feed({ sort }) {
             setIsLoading(false);
         };
         fetchData().catch((error) => console.log(error));
-    }, [page, topic, sort.order, sort.sortBy, sort]);
+    }, [page, topic, sort]);
 
     const nextPage = (currentPage) => {
         let searchParams = { p: currentPage + 1 };
