@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { UserContextProvider } from "./context/userContext";
 import HomePage from "./components/HomePage";
 import AllArticlesPage from "./components/AllArticlesPage";
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
     return (
@@ -16,6 +17,8 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/articles/:id" element={<ArticlePage />} />
                     <Route path="/articles" element={<AllArticlesPage />} />
+                    <Route path="/error/:code" element={<ErrorPage />} />
+                    <Route path="/*" element={<ErrorPage />} />
                 </Routes>
             </main>
         </UserContextProvider>

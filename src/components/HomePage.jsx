@@ -49,6 +49,17 @@ export default function HomePage() {
                             </Link>
                         </li>
                     ))}
+                    <li
+                        className="list-none bg-orange-300 border-orange-500 text-orange-900 font-semibold hover:bg-orange-200 transition-colors border rounded"
+                        key="cheeses"
+                    >
+                        <Link
+                            className="text-xs p-1 inline-flex items-center"
+                            to={`/articles?topic=cheeses`}
+                        >
+                            Non-existent Topic
+                        </Link>
+                    </li>
                 </ul>
             </section>
 

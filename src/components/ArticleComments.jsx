@@ -13,7 +13,12 @@ export default function ArticleComments({ articleId }) {
     const { user } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [comments, setComments] = useState();
-    const [newComment, setNewComment] = useState("");
+    const [newComment, setNewComment] = useState({
+        author: user.username,
+        body: "",
+        comment_id: user.username,
+        created_at: new Date(),
+    });
     const [isPosting, setIsPosting] = useState(false);
 
     const fetchData = async () => {
@@ -103,9 +108,18 @@ export default function ArticleComments({ articleId }) {
                     type="text"
                     value={newComment.body}
                 />
+                <p
+                    className={cn(
+                        "text-sm",
+                        newComment.body.length > 199 && "text-red-500"
+                    )}
+                >
+                    {newComment.body.length} / 200
+                </p>
                 <button
+                    disabled={newComment.body.length > 199}
                     type="submit"
-                    className="border my-2 place-self-end py-1 px-2 rounded text-sm h-full bg-emerald-600 text-emerald-50"
+                    className="disabled:opacity-50 disabled:cursor-not-allowed border my-2 place-self-end py-1 px-2 rounded text-sm h-full bg-emerald-600 text-emerald-50"
                 >
                     {isPosting ? <Spinner /> : "Comment"}
                 </button>
