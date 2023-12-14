@@ -1,5 +1,5 @@
 import { getSingleArticle } from "../lib/api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -9,6 +9,7 @@ import ArticleComments from "./ArticleComments";
 dayjs.extend(relativeTime);
 
 export default function ArticlePage() {
+    const nav = useNavigate();
     const [article, setArticle] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
@@ -20,7 +21,9 @@ export default function ArticlePage() {
             setArticle(article);
             setIsLoading(false);
         };
-        fetchData();
+        fetchData().catch((err) => {
+            nav(`/error/${err.response.status}?msg=${err.response.data.msg}`);
+        });
     }, [id]);
 
     return isLoading ? (
