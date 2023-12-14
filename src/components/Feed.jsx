@@ -30,7 +30,6 @@ export default function Feed() {
         };
         fetchData()
             .catch((error) => {
-                console.log(error.response);
                 setIsError(true);
                 setError(error.response);
                 nav(
