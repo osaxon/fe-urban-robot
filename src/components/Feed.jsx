@@ -31,11 +31,9 @@ export default function Feed({ sort }) {
             setIsLoading(false);
         };
         fetchData()
-            .catch((error) => {
-                setIsError(true);
-                setError(error.response);
+            .catch((err) => {
                 nav(
-                    `/error/${error.response.status}?msg=${error.response.data.msg}`
+                    `/error/${err.response.status}?msg=${err.response.data.msg}`
                 );
             })
             .finally(() => setIsLoading(false));

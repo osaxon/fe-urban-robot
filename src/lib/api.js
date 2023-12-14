@@ -2,28 +2,24 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: "https://be-urban-robot-production.up.railway.app/api",
-    timeout: 1000,
+    timeout: 3000,
 });
 
 // eslint-disable-next-line no-unused-vars
 export const getArticles = async (p = 1, topicQuery, sort) => {
-    try {
-        let url = `/articles?p=${p}`;
-        if (topicQuery) {
-            console.log(topicQuery);
-            url += `&topic=${topicQuery}`;
-        }
+    let url = `/articles?p=${p}`;
 
-        if (sort && sort.order && sort.sortBy) {
-            url += `&sort_by=${sort.sortBy.toLowerCase()}&order=${sort.order.toLowerCase()}`;
-        }
-
-        const { data } = await api.get(url);
-        return data;
-    } catch (error) {
-        console.error(error);
-        throw new Error("error fetching articles");
+    if (topicQuery) {
+        url += `&topic=${topicQuery}`;
     }
+
+    if (sort && sort.order && sort.sortBy) {
+        url += `&sort_by=${sort.sortBy.toLowerCase()}&order=${sort.order.toLowerCase()}`;
+    }
+
+    const { data } = await api.get(url);
+    console.log(data);
+    return data;
 };
 
 export const getSingleArticle = async (id) => {
