@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getTopics } from "../lib/api";
 import Feed from "./Feed";
+import SortAndFilter from "./SortAndFilter";
 
 export default function HomePage() {
     const [topics, setTopics] = useState([]);
+    const [sortState, setSortState] = useState({
+        sortBy: "Votes",
+        order: "DESC",
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,7 +29,8 @@ export default function HomePage() {
                     The backpage of the internet
                 </h2>
             </section>
-            <section className="bg-slate-50 p-4 my-4 rounded transition-all">
+            <SortAndFilter sortState={sortState} setSortState={setSortState} />
+            <section className="bg-slate-50 shadow-lg p-4 my-4 rounded transition-all">
                 <h3 className="font-bold text-lg text-slate-900">Topics</h3>
                 <p className="text-slate-700">
                     Select a topic to view related articles
@@ -46,7 +52,7 @@ export default function HomePage() {
                 </ul>
             </section>
 
-            <Feed />
+            <Feed sort={sortState} />
         </>
     );
 }

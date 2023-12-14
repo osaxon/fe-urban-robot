@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { getArticles } from "../lib/api";
 import { useEffect, useState } from "react";
@@ -5,7 +6,7 @@ import ArticleCard from "./ArticleCard";
 import { useSearchParams } from "react-router-dom";
 import { SpinnerFull } from "./ui/Spinner";
 
-export default function Feed() {
+export default function Feed({ sort }) {
     const [articles, setArticles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [totalArticles, setTotalArticles] = useState(0);
@@ -19,14 +20,15 @@ export default function Feed() {
             setIsLoading(true);
             const { articles, total_count } = await getArticles(
                 page ?? 1,
-                topic
+                topic,
+                sort
             );
             setArticles(articles);
             setTotalArticles(total_count);
             setIsLoading(false);
         };
         fetchData().catch((error) => console.log(error));
-    }, [page, topic]);
+    }, [page, topic, sort]);
 
     const nextPage = (currentPage) => {
         let searchParams = { p: currentPage + 1 };
