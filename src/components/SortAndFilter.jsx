@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 import { TbSortDescendingNumbers } from "react-icons/tb";
 import { TbSortAscendingNumbers } from "react-icons/tb";
-
-import { useState } from "react";
+import { MdOutlineCategory } from "react-icons/md";
 
 const sortByOpts = [
     {
@@ -10,7 +10,7 @@ const sortByOpts = [
     },
     {
         label: "Comments",
-        val: "comments",
+        val: "comment_count",
     },
     {
         label: "Votes",
@@ -29,47 +29,66 @@ const orderOpts = [
     },
 ];
 
-export default function SortAndFilter() {
-    const [sortState, setSortState] = useState({
-        sortBy: "Sort By",
-        order: "DESC",
-    });
-
+export default function SortAndFilter({ sortState, setSortState }) {
     return (
-        <aside className="py-4 flex items-center gap-4">
-            <select
-                value={sortState.sortBy}
-                onChange={(e) =>
-                    setSortState((curr) => ({
-                        ...curr,
-                        sortBy: e.target.value,
-                    }))
-                }
-                name="sortBy"
-                id="sortBy"
-            >
-                <option disabled selected value="Sort By">
+        <aside className="flex items-center gap-4">
+            <div className="flex flex-col">
+                <label
+                    className="text-slate-600 text-sm flex items-center"
+                    htmlFor="sortBy"
+                >
+                    <MdOutlineCategory />
                     Sort By
-                </option>
-                {sortByOpts.map(({ label, val }) => (
-                    <option key={val}>{label}</option>
-                ))}
-            </select>
-            <select
-                value={sortState.order}
-                onChange={(e) =>
-                    setSortState((curr) => ({
-                        ...curr,
-                        order: e.target.value,
-                    }))
-                }
-                name="sortBy"
-                id="sortBy"
-            >
-                {orderOpts.map(({ label }) => (
-                    <option key={label}>{label}</option>
-                ))}
-            </select>
+                </label>
+                <select
+                    value={sortState.sortBy}
+                    onChange={(e) =>
+                        setSortState((curr) => ({
+                            ...curr,
+                            sortBy: e.target.value,
+                        }))
+                    }
+                    name="sortBy"
+                    id="sortBy"
+                    className="border rounded p-1 text-xs shadow-sm"
+                >
+                    {sortByOpts.map(({ label, val }) => (
+                        <option value={val} key={val}>
+                            {label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div className="flex flex-col">
+                <label
+                    className="text-slate-600 text-sm flex items-center"
+                    htmlFor="sortBy"
+                >
+                    {sortState.order === "DESC" ? (
+                        <TbSortDescendingNumbers />
+                    ) : (
+                        <TbSortAscendingNumbers />
+                    )}
+                    Order
+                </label>
+                <select
+                    value={sortState.order}
+                    onChange={(e) =>
+                        setSortState((curr) => ({
+                            ...curr,
+                            order: e.target.value,
+                        }))
+                    }
+                    name="sortBy"
+                    className="border rounded p-1 text-xs shadow-sm"
+                    id="order"
+                >
+                    {orderOpts.map(({ label }) => (
+                        <option key={label}>{label}</option>
+                    ))}
+                </select>
+            </div>
         </aside>
     );
 }

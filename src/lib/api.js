@@ -5,11 +5,12 @@ const api = axios.create({
     timeout: 1000,
 });
 
-export const getArticles = async (p = 1, topicQuery) => {
+export const getArticles = async (p = 1, topicQuery, sort) => {
     let url = `/articles?p=${p}`;
     if (topicQuery) {
         url += `&topic=${topicQuery}`;
     }
+    url += `&sort_by=${sort.sortBy.toLowerCase()}&order=${sort.order.toLowerCase()}`;
     const { data } = await api.get(url);
     return data;
 };
