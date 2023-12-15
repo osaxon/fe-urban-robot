@@ -36,7 +36,7 @@ export default function ArticleCard(props) {
     };
 
     return (
-        <li className="border p-4 list-none rounded shadow-lg space-y-2">
+        <li className="border p-4 list-none rounded shadow-lg space-y-2 bg-background">
             <div className="flex items-center justify-between">
                 <p className="text-slate-500">
                     Posted by{" "}

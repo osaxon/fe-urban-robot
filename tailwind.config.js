@@ -12,6 +12,9 @@ export default {
                 secondary: "var(--secondary)",
                 accent: "var(--accent)",
             },
+            animation: {
+                rotate: "spin 16s linear infinite",
+            },
         },
     },
     plugins: [],

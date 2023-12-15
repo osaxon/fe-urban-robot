@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+
     :root {
+
         --text: #177294;
         --text-primary: #bdf5d9;
         --background: #fcfcfc;
@@ -16,8 +18,49 @@
         --text: #b9dee9;
         --text-primary: #562c74;
         --background: #252522;
-        --primary: #8ce4dc;
-        --secondary: #dae8ed;
+        --primary: #dae8ed;
+        --secondary: #8ce4dc;
         --accent: #eecc42;
     }
+}
+
+.content-grid {
+    --padding-inline: 1.5rem;
+    --content-max-w: 70ch;
+    --breakout-max-w: 85ch;
+    --breakout-size: calc((var(--breakout-max-w) - var(--content-max-w)) / 2);
+
+    display: grid;
+    grid-template-columns:
+        [full-width-start] minmax(var(--padding-inline), 1fr) [breakout-start] minmax(0, var(--breakout-size)) [content-start] min(100% - (var(--padding-inline) * 2), var(--content-max-w)) [content-end] minmax(0, var(--breakout-size)) [breakout-end] minmax(var(--padding-inline), 1fr) [full-width-end];
+}
+
+.content-grid> :not(.breakout, .full-width),
+.full-width> :not(.breakout, .full-width) {
+    grid-column: content;
+}
+
+.content-grid>.breakout {
+    grid-column: breakout;
+}
+
+.content-grid>.content {
+    grid-column: content;
+}
+
+.content-grid>.content-full-width {
+    grid-column: full-width;
+}
+
+.content-grid>.full-width {
+    grid-column: full-width;
+
+    display: grid;
+    grid-template-columns: inherit;
+}
+
+.polka {
+    background-image: radial-gradient(var(--text) 0.5px, transparent 0.5px), radial-gradient(var(--text) 0.5px, var(--background) 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
 }

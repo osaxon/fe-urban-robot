@@ -9,15 +9,17 @@ import { CiDark } from "react-icons/ci";
 export default function Header() {
     const { user } = useContext(UserContext);
     const { theme, toggleTheme } = useContext(ThemeContext);
-    console.log(theme);
 
     return (
-        <nav className="flex justify-between border p-4">
-            <a className="flex items-end font-bold font-mono text-xl" href="/">
-                <FaCodeBranch className="w-8 h-8 text-emerald-600" />
+        <nav className="flex bg-background justify-between border p-4 gap-4">
+            <a className="flex font-bold font-mono text-xl" href="/">
+                <FaCodeBranch className="w-8 h-8 text-accent" />
                 NC News
             </a>
-            <button onClick={toggleTheme}>
+            <button
+                className="flex-grow items-center inline-flex justify-end"
+                onClick={toggleTheme}
+            >
                 {theme === "light" ? (
                     <CiLight className="w-8 h-8" />
                 ) : (

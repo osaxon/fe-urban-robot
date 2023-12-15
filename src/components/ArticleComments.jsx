@@ -83,7 +83,7 @@ export default function ArticleComments({ articleId }) {
     return isLoading ? (
         <SpinnerFull />
     ) : (
-        <section className="space-y-6 py-4">
+        <section className="space-y-6 py-4 bg-background breakout px-4">
             <form
                 className="flex flex-col border-b py-2 bg-slate-50 p-4 rounded"
                 onSubmit={submitComment}

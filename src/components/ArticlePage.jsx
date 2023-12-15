@@ -30,10 +30,10 @@ export default function ArticlePage() {
         <SpinnerFull />
     ) : (
         article && (
-            <>
-                <section className="space-y-4">
-                    <header>
-                        <h1 className="font-bold text-2xl">{article.title}</h1>
+            <main className="content-grid">
+                <section className="breakout bg-background px-4">
+                    <header className="py-6">
+                        <h1 className="font-bold text-4xl">{article.title}</h1>
                         <p className="text-sm text-slate-600">
                             By{" "}
                             <a className="text-accent hover:underline" href="/">
@@ -48,12 +48,12 @@ export default function ArticlePage() {
                         alt={`article cover image`}
                         className="w-full"
                     />
-                    <article className="text-lg leading-relaxed py-6">
-                        {article.body}
-                    </article>
                 </section>
+                <article className="text-lg breakout leading-relaxed py-6 bg-background px-4">
+                    {article.body}
+                </article>
                 <ArticleComments articleId={id} />
-            </>
+            </main>
         )
     );
 }
