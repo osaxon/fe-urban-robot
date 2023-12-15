@@ -38,9 +38,9 @@ export default function ArticleCard(props) {
     return (
         <li className="border p-4 list-none rounded shadow-lg space-y-2">
             <div className="flex items-center justify-between">
-                <p className="text-slate-600">
+                <p className="text-slate-500">
                     Posted by{" "}
-                    <span className="text-emerald-600 hover:underline">
+                    <span className="text-accent hover:underline">
                         <Link to={`/articles/${article.article_id}`}>
                             {article.author}
                         </Link>
@@ -49,7 +49,7 @@ export default function ArticleCard(props) {
                 </p>
                 <Link
                     to={`/articles?topic=${article.topic}`}
-                    className="border-emerald-400 border rounded-lg p-1 bg-emerald-300 text-xs font-bold text-emerald-800"
+                    className="border-accent border rounded px-2 py-1 text-xs font-bold text-text shadow hover:shadow-lg hover:-translate-y-[1px] hover:translate-x-[1px] transition-all"
                 >
                     {article.topic}
                 </Link>

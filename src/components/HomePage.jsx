@@ -19,7 +19,7 @@ export default function HomePage() {
 
     return (
         <>
-            <section className="py-12">
+            <section className="py-6 px-4 bg-primary rounded text-text-primary space-y-6">
                 <h1 className="font-bold text-2xl text-center">
                     Welcome to NC News!
                 </h1>
@@ -27,10 +27,12 @@ export default function HomePage() {
                     The backpage of the internet
                 </h2>
             </section>
-            <SortAndFilter sortState={sortState} setSortState={setSortState} />
-            <section className="bg-slate-50 shadow-md p-4 my-4 rounded transition-all">
-                <h3 className="font-bold text-lg text-slate-900">Topics</h3>
-                <p className="text-slate-700">
+            <section
+                data-inverted
+                className="bg-slate-500 bg-opacity-10 shadow-md p-4 my-4 rounded transition-all"
+            >
+                <h3 className="font-bold text-lg text-text">Topics</h3>
+                <p className="text-text">
                     Select a topic to view related articles
                 </p>
                 <ul className="grid grid-cols-2 md:grid-cols-4 gap-2 py-4">
@@ -38,7 +40,7 @@ export default function HomePage() {
                         data.topics &&
                         data.topics.map(({ slug, description }) => (
                             <li
-                                className="list-none p-2 bg-white border rounded"
+                                className="list-none p-2 border rounded"
                                 key={slug}
                             >
                                 <Link
@@ -46,12 +48,13 @@ export default function HomePage() {
                                     to={`/?topic=${slug}`}
                                 >
                                     {slug}
+                                    <p className="text-sm">{description}</p>
                                 </Link>
-                                <p className="text-sm">{description}</p>
                             </li>
                         ))}
                 </ul>
             </section>
+            <SortAndFilter sortState={sortState} setSortState={setSortState} />
 
             <Feed sort={sortState} />
         </>

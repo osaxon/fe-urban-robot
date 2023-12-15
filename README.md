@@ -11,3 +11,10 @@ git clone https://github.com/osaxon/fe-urban-robot.git
 cd be-news
 npm install
 ```
+
+## Features
+
+- **Vite + React:** Uses latest version of React and Vite to scaffold project
+- **TailwindCSS:** Tailwind styles with extended theme classes
+- **Light & Dark modes:** Light and dark mode toggle with persisted state in local storage
+- **TanStack Query:** API and fetch state managed by React Query, providing caching and optimistic updates
