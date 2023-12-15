@@ -6,6 +6,7 @@ export default {
         extend: {
             colors: {
                 text: "var(--text)",
+                "text-primary": "var(--text-primary)",
                 background: "var(--background)",
                 primary: "var(--primary)",
                 secondary: "var(--secondary)",

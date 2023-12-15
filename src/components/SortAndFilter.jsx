@@ -31,10 +31,10 @@ const orderOpts = [
 
 export default function SortAndFilter({ sortState, setSortState }) {
     return (
-        <aside className="flex items-center gap-4">
+        <aside className="flex items-center gap-4 my-4 text-text justify-end">
             <div className="flex flex-col">
                 <label
-                    className="text-slate-600 text-sm flex items-center"
+                    className="text-text text-sm flex items-center"
                     htmlFor="sortBy"
                 >
                     <MdOutlineCategory />
@@ -50,7 +50,7 @@ export default function SortAndFilter({ sortState, setSortState }) {
                     }
                     name="sortBy"
                     id="sortBy"
-                    className="border rounded p-1 text-xs shadow-sm"
+                    className="border rounded p-1 text-xs text-slate-600 shadow-sm"
                 >
                     {sortByOpts.map(({ label, val }) => (
                         <option value={val} key={val}>
@@ -61,10 +61,7 @@ export default function SortAndFilter({ sortState, setSortState }) {
             </div>
 
             <div className="flex flex-col">
-                <label
-                    className="text-slate-600 text-sm flex items-center"
-                    htmlFor="sortBy"
-                >
+                <label className=" text-sm flex items-center" htmlFor="sortBy">
                     {sortState.order === "DESC" ? (
                         <TbSortDescendingNumbers />
                     ) : (
@@ -81,7 +78,7 @@ export default function SortAndFilter({ sortState, setSortState }) {
                         }))
                     }
                     name="sortBy"
-                    className="border rounded p-1 text-xs shadow-sm"
+                    className="border rounded text-slate-600 p-1 text-xs shadow-sm"
                     id="order"
                 >
                     {orderOpts.map(({ label }) => (

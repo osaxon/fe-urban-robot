@@ -88,9 +88,9 @@ export default function ArticleComments({ articleId }) {
                 className="flex flex-col border-b py-2 bg-slate-50 p-4 rounded"
                 onSubmit={submitComment}
             >
-                <p className="text-sm">
+                <p className="text-sm text-slate-500">
                     Comment as{" "}
-                    <a className="text-emerald-600 hover:underline" href="/">
+                    <a className="text-accent hover:underline" href="/">
                         {user.username}
                     </a>
                 </p>
@@ -110,7 +110,7 @@ export default function ArticleComments({ articleId }) {
                 />
                 <p
                     className={cn(
-                        "text-sm",
+                        "text-sm text-slate-400",
                         newComment.body.length > 199 && "text-red-500"
                     )}
                 >
@@ -119,7 +119,7 @@ export default function ArticleComments({ articleId }) {
                 <button
                     disabled={newComment.body.length > 199}
                     type="submit"
-                    className="disabled:opacity-50 disabled:cursor-not-allowed border my-2 place-self-end py-1 px-2 rounded text-sm h-full bg-emerald-600 text-emerald-50"
+                    className="disabled:opacity-50 disabled:cursor-not-allowed border my-2 place-self-end py-1 px-2 rounded text-sm h-full bg-slate-200 text-slate-800"
                 >
                     {isPosting ? <Spinner /> : "Comment"}
                 </button>
@@ -136,11 +136,16 @@ export default function ArticleComments({ articleId }) {
                             )}
                             key={comment.comment_id}
                         >
-                            <div className="text-slate-700 flex justify-between">
+                            <div className="text-slate-700 dark:text-slate-400 text-sm flex justify-between">
                                 <p>
-                                    {comment.author === user.username
-                                        ? "you"
-                                        : comment.author}{" "}
+                                    <a
+                                        className="text-accent hover:underline"
+                                        href=""
+                                    >
+                                        {comment.author === user.username
+                                            ? "you"
+                                            : comment.author}{" "}
+                                    </a>
                                     · {dayjs(comment.created_at).fromNow()}
                                 </p>
                                 {comment.author === user.username && (

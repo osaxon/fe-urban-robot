@@ -34,9 +34,12 @@ export default function ArticlePage() {
                 <section className="space-y-4">
                     <header>
                         <h1 className="font-bold text-2xl">{article.title}</h1>
-                        <p className="text-sm text-slate-800">
-                            By {article.author} ·{" "}
-                            {dayjs(article.created_at).fromNow()}
+                        <p className="text-sm text-slate-600">
+                            By{" "}
+                            <a className="text-accent hover:underline" href="/">
+                                {article.author}
+                            </a>{" "}
+                            · {dayjs(article.created_at).fromNow()}
                         </p>
                     </header>
 

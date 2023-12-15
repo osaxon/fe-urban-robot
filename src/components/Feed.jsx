@@ -62,13 +62,13 @@ export default function Feed({ sort }) {
                                 className={cn(
                                     "px-2 py-1 border rounded transition-colors shadow-md",
                                     +page === i + 1 &&
-                                        "bg-emerald-400 ring-2 ring-emerald-200"
+                                        "bg-secondary ring-2 ring-primary"
                                 )}
                                 key={i + 1}
                             >
                                 <button
                                     disabled={+page === i + 1}
-                                    className="disabled:text-emerald-900 transition-colors"
+                                    className="disabled:text-primary transition-colors"
                                     onClick={() => changePage(i + 1)}
                                 >
                                     {i + 1}
