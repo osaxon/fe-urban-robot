@@ -32,6 +32,7 @@ export const getArticles = async (page = 1, queries) => {
 };
 
 export const getArticlesByTopic = async (topic) => {
+    console.log(topic, "<--- data");
     const { data } = await api.get(`/articles?topic=${topic}`);
     return data;
 };

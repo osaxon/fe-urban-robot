@@ -3,23 +3,26 @@ import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import { getArticlesByTopic, getTopic } from "../lib/api";
 import BackToAll from "./ui/BackToAll";
+import { SpinnerFull } from "./ui/Spinner";
 
 export default function ArticlesGrid() {
     const { topic } = useParams();
+    console.log(topic, "params");
 
-    const { data } = useQuery({
+    const { data: topicData, status: topicStatus } = useQuery({
         queryKey: ["topic", topic],
         queryFn: async () => await getTopic(topic),
     });
 
-    const {
-        data: { articles },
-    } = useQuery({
+    const { data, status: articlesStatus } = useQuery({
         queryKey: ["articles", topic],
         queryFn: async () => await getArticlesByTopic(topic),
     });
 
-    console.log(articles);
+    console.log(data);
+
+    if (articlesStatus === "pending" || topicStatus === "pending")
+        return <SpinnerFull />;
 
     return (
         <main className="content-grid">
@@ -27,11 +30,11 @@ export default function ArticlesGrid() {
                 <h1 className="font-bold text-2xl text-center">
                     Articles about {topic}
                 </h1>
-                <p className="text-center">{data.topic.description}</p>
+                <p className="text-center">{topicData.topic.description}</p>
             </header>
             <BackToAll />
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 breakout gap-2">
-                {articles?.map((article) => (
+                {data.articles?.map((article) => (
                     <article
                         key={article.article_id}
                         className="bg-background rounded-sm shadow-md p-4"
