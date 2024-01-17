@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { SpinnerFull } from "./ui/Spinner";
 import ArticleComments from "./ArticleComments";
+import BackToAll from "./ui/BackToAll";
 
 dayjs.extend(relativeTime);
 
@@ -31,7 +32,7 @@ export default function ArticlePage() {
     ) : (
         article && (
             <main className="content-grid">
-                <section className="breakout bg-background px-4">
+                <section className="breakout bg-background">
                     <header className="py-6">
                         <h1 className="font-bold text-4xl">{article.title}</h1>
                         <p className="text-sm text-slate-600">
@@ -49,9 +50,10 @@ export default function ArticlePage() {
                         className="w-full"
                     />
                 </section>
-                <article className="text-lg breakout leading-relaxed py-6 bg-background px-4">
+                <article className="text-lg breakout leading-relaxed py-6 bg-background">
                     {article.body}
                 </article>
+                <BackToAll />
                 <ArticleComments articleId={id} />
             </main>
         )

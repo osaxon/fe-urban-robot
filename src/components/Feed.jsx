@@ -8,19 +8,25 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { SpinnerFull } from "./ui/Spinner";
 import { cn } from "../lib/utils";
 
-export default function Feed({ sort }) {
+export default function Feed() {
     const router = useNavigate();
     const [search, setSearch] = useSearchParams();
 
     const page = search.get("p");
     const topic = search.get("topic");
+    const sort = search.get("sort");
+    const order = search.get("order");
 
     const { data, isLoading, isError, error, isFetching, isPlaceholderData } =
         useQuery({
-            queryKey: ["articles", page, { topic, sort }],
+            queryKey: ["articles", page, { topic, sort, order }],
             queryFn: async () => {
                 try {
-                    const data = await getArticles(page || 1, { topic, sort });
+                    const data = await getArticles(page || 1, {
+                        topic,
+                        sort,
+                        order,
+                    });
                     return data;
                 } catch (error) {
                     router(
@@ -41,6 +47,8 @@ export default function Feed({ sort }) {
 
     return isLoading ? (
         <SpinnerFull />
+    ) : isError ? (
+        <>Error</>
     ) : (
         <section>
             <ul className="space-y-4">

@@ -7,18 +7,37 @@ const api = axios.create({
 
 // eslint-disable-next-line no-unused-vars
 export const getArticles = async (page = 1, queries) => {
-    const { topic, sort } = queries;
+    const { topic, sort, order } = queries;
+    console.log(queries, "<--- queries");
+
     let url = `/articles?p=${page}`;
+    console.log(url, "<--- url");
 
     if (topic) {
         url += `&topic=${topic}`;
     }
 
-    if (sort && sort.order && sort.sortBy) {
-        url += `&sort_by=${sort.sortBy.toLowerCase()}&order=${sort.order.toLowerCase()}`;
+    if (sort) {
+        url += `&sort_by=${sort.toLowerCase()}`;
     }
 
+    if (order) {
+        url += `&order=${order.toLowerCase()}`;
+    }
+
+    console.log(url, "<--- url");
+
     const { data } = await api.get(url);
+    return data;
+};
+
+export const getArticlesByTopic = async (topic) => {
+    const { data } = await api.get(`/articles?topic=${topic}`);
+    return data;
+};
+
+export const getTopic = async (topic) => {
+    const { data } = await api.get(`/topics/${topic}`);
     return data;
 };
 

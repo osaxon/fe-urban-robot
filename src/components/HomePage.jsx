@@ -13,6 +13,7 @@ export default function HomePage() {
     const [sortState, setSortState] = useState({
         sortBy: "Votes",
         order: "DESC",
+        topic: undefined,
     });
 
     const { data } = useQuery({
@@ -62,9 +63,7 @@ export default function HomePage() {
                 className="bg-background border shadow-md p-4 my-4 rounded transition-all"
             >
                 <h3 className="font-bold text-lg text-text">Topics</h3>
-                <p className="text-text">
-                    Select a topic to view related articles
-                </p>
+                <p className="text-text">View articles by topic</p>
                 <ul className="grid grid-cols-2 md:grid-cols-4 gap-2 py-4">
                     {data &&
                         data.topics &&
@@ -74,11 +73,11 @@ export default function HomePage() {
                                 key={slug}
                             >
                                 <Link
-                                    className="hover:underline"
-                                    to={`/?topic=${slug}`}
+                                    className="hover:underline text-sm"
+                                    to={`/topics/${slug}/articles`}
                                 >
                                     {slug}
-                                    <p className="text-sm">{description}</p>
+                                    <p>{description}</p>
                                 </Link>
                             </li>
                         ))}
